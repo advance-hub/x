@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import mountTest from '../../../tests/shared/mountTest';
 import rtlTest from '../../../tests/shared/rtlTest';
@@ -91,6 +91,16 @@ describe('Suggestion Component', () => {
     render(<MockSuggestion items={items} open />);
 
     expect(document.querySelector('.bamboo')).toBeTruthy();
+  });
+
+  it('should preserve the default space input behavior', () => {
+    const { container } = render(<MockSuggestion items={[]} />);
+    const input = container.querySelector('input')!;
+    const event = createEvent.keyDown(input, { key: ' ', code: 'Space' });
+
+    fireEvent(input, event);
+
+    expect(event.defaultPrevented).toBe(false);
   });
 
   describe('arrow', () => {

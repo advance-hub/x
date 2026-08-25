@@ -58,6 +58,12 @@ export default function useActive(
   };
 
   const onKeyDown: React.KeyboardEventHandler = useEvent((e) => {
+    // Cascader handles Space as a selection key and prevents its default behavior.
+    // Keep the event inside the editable child so Sender can insert spaces normally.
+    if (e.key === ' ') {
+      e.stopPropagation();
+    }
+
     if (!open) {
       return;
     }
